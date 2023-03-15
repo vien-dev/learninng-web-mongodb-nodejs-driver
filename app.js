@@ -37,7 +37,7 @@ async function run() {
 
     assert.equal(result.insertedCount, 3);
 
-    const query = {};
+    const query = {stock: {$gt: 15}};
     await products.find(query).forEach((val) => { 
       console.dir(val);
     });
