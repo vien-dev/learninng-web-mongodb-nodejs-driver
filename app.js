@@ -47,7 +47,7 @@ async function run() {
       price: 0.90,
       stock: 20
     }};
-    products.updateOne(filter, udpateDocument);
+    await products.updateOne(filter, udpateDocument);
 
     //now query again
     await products.find(query).forEach((val) => { 
