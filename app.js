@@ -41,6 +41,19 @@ async function run() {
     await products.find(query).forEach((val) => { 
       console.dir(val);
     });
+
+    const filter = { _id: 3 };
+    const udpateDocument = {$set: {
+      price: 0.90,
+      stock: 20
+    }};
+    products.updateOne(filter, udpateDocument);
+
+    //now query again
+    await products.find(query).forEach((val) => { 
+      console.dir(val);
+    });
+
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();
