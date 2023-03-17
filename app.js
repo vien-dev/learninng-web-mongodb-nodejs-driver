@@ -1,17 +1,33 @@
 const mongoose = require("mongoose");
 
-const product = mongoose.Schema({
+const productSchema = mongoose.Schema({
   _id: Number,
-  name: String,
-  price: Number,
-  stock: Number,
+  name: {
+    type: String,
+    required: [true, "A product must have a name!"]
+  },
+  price: {
+    type: Number,
+    required: [true, "A product must have a price!"]
+  },
+  stock: {
+    type: Number,
+    required: [true, "A product must have a stock number!"]
+  },
   reviews: [{
     authorName: String,
     rating: Number,
     review: String
   }]
 });
-const Products = mongoose.model("Products", product);
+const Products = mongoose.model("Products", productSchema);
+
+const orderSchema = mongoose.Schema({
+  _id: Number,
+  item: productSchema,
+  amount: Number
+})
+const Orders = mongoose.model("Orders", orderSchema);
 
 async function run() {
   try {
@@ -95,6 +111,18 @@ async function run() {
     if(products) {
       console.log(products);
     }
+
+    const rubber = await Products.findOne({name: {$eq: "Rubber"}});
+
+    const buyRubber = Orders({
+      _id: 1,
+      item: rubber,
+      amount: 2
+    })
+    await buyRubber.save();
+
+    const orders = await Orders.find({});
+    console.log(orders);
   } catch (err) {
     console.log(err);
   }
